@@ -1,0 +1,97 @@
+body {
+    background: #121212;
+    color: #ccc;
+    font-family: system-ui, -apple-system, Roboto, "Segoe UI", sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.5;
+}
+
+header {
+    background: #121212;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 { font-size: 3.0em; }
+p {font-size: 1.3em;}
+
+h1, h2, h3, h4, h5 {
+  margin: 0.5em 0 0.5em;
+  line-height: 1.2;
+  font-weight: bold;
+  clear: both;
+}
+
+figure {
+  margin: auto 0;
+}
+
+code {
+  background: #f8f8f8;
+  border: 1px dotted silver;
+  padding-left: 0.3em;
+  padding-right: 0.3em;
+}
+
+pre {
+  counter-reset: line;
+}
+
+figure pre {
+  margin-top: 0;
+}
+
+pre > code {
+  display: block;
+  padding: 0.5em;
+  overflow: auto;
+  line-height: normal;
+  color: #ccc;
+  background: #222;
+  border: unset;
+  font-size: 1.5em;
+}
+
+figcaption {
+  padding-left: 0.5em;
+  font-size: medium;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.contents {
+        max-width: 60em;
+        margin: auto;
+        padding: 0 1em;
+}
+
+.include {
+  color: green;
+}
+
+.typo {
+  color: #E4D00A;
+}
+
+.func {
+  color: #E4D00A;
+  font-weight: bold;
+}
+
+.file {
+  font-weight: bold;
+  font-size: 1.0em;
+}
+
+.init {
+  background-color: #E4D00A;
+  color: #000;
+}
+.include {
+  color: #5dbb63;
+}
+.ret {
+  color: #b90e0a;
+}

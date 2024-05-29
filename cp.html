@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <title>Programación Competitiva</title>
+</head>
+  <body>
+    <div class="contents">
+      <h1>DEVlog: Programación Competitiva</h1>
+      <p>Aquí encontrarás algunos reviews de problemas y algoritmos que al menos a mí me han llamado la atención</p>
+      <h2>Codeforces</h2>
+      <p></p>
+      <figure>
+        <figcaption class="init">
+  	<cite class="file">948-C.c</cite>
+        </figcaption>
+        <pre><code>
+	#include "bits/stdc++.h"
+	#define all(a) a.begin(), a.end()
+	#define pb push_back
+	typedef long long ll;
+	typedef long double ld;
+	using namespace std;
+	const int MOD = 1000000007;
+	 
+	template&lttypename T1, typename T2>
+	inline bool relaxmi(T1 &a, const T2 &b) {
+	    return a > b ? a = b, true : false;
+	}
+	 
+	template&lttypename T1, typename T2>
+	inline bool relaxma(T1 &a, const T2 &b) {
+	    return a &lt b ? a = b, true : false;
+	}
+	 
+	const int N = 100005;
+	 
+	int calc(vector&ltpair&ltint, int>> &t, int d) {
+	    int LCM = 0, cnt = 0;
+	    for (auto [j, c]: t) {
+	        if (d % j == 0) {
+	            if (LCM == 0) LCM = j;
+	            else LCM = lcm(LCM, j);
+	            cnt += c;
+	        }
+	    }
+	    if (LCM != d) cnt = 0;
+	    return cnt;
+	}
+	 
+	void solve() {
+	    int n;
+	    cin >> n;
+	    vector&ltint> v(n);
+	    for (auto &i: v) cin >> i;
+	    ll LCM = 1;
+	    int mx = *max_element(all(v));
+	    for (auto i: v) {
+	        LCM = lcm(LCM, i);
+	        if (LCM > mx) {
+	            cout &lt&lt n &lt&lt '\n';
+	            return;
+	        }
+	    }
+	    map&ltint, int> cnt;
+	    for (auto i: v) cnt[i]++;
+	    vector&ltpair&ltint, int>> t;
+	    for (auto i: cnt)
+	        t.push_back(i);
+	    int res = 0;
+	    for (int i = 1; i * i &lt= mx; i++) {
+	        if (mx % i == 0) {
+	            if (!cnt.contains(i))
+	                relaxma(res, calc(t, i));
+	            if (!cnt.contains(mx / i))
+	                relaxma(res, calc(t, mx / i));
+	        }
+	    }
+	    cout &lt&lt res &lt&lt '\n';
+	}
+	 
+	signed main() {
+	    ios::sync_with_stdio(false);
+	    cin.tie(nullptr);
+	    cout.tie(nullptr);
+	    int tt = 1;
+	    cin >> tt;
+	    while (tt--)
+	        solve();
+	}
+          </code></pre>
+      </figure>
+      <p><a href="https://codeforces.com/contest/1977/problem/C">Link del problema.</a><BR>
+      Iré desglosando el problema y explicando las partes del código, para ayudar/me a entender.<BR>
+      </p>
+      <p>
+      Entonces, el problema nos pide hallar una subsecuencia en el arreglo 'a' de tal manera que el LCM de los elementos de la subsecuencia no se encuentre dentro del arreglo, es decir 
+      $$LCM(a_0, a_1, \cdots, a_{n-1}, a_n) > max(a)$$
+      Entonces, una idea que facilmente se nos viene a la cabeza es verificar si el arreglo 'a' naturalmente cumple con la condición mencionada anteriormente, veamos el código que hace esto:
+      </p>
+      <figure>
+        <figcaption class="init">
+  	<cite class="file">Extracto 948-C.c</cite>
+        </figcaption>
+        <pre><code>
+	for (auto &i: v) cin >> i;
+	ll LCM = 1;
+	int mx = *max_element(all(v));
+	for (auto i: v) {
+	    LCM = lcm(LCM, i);
+	    if (LCM > mx) {
+		cout &lt&lt n &lt&lt '\n';
+		return;
+	    }
+	}
+        </code></pre>
+      </figure>
+      <p>Primeramente llenamos el arreglo 'v' con la entrada desde el input, seguidamente calculamos el máximo elemento del arreglo 'v' con la función de la stl, luego con un for each vamos calculando el LCM entre el LCM que es 1 al principio y el valor de i, si el LCM es mayor que el máximo elemento del arreglo entonces habremos terminado e imprimimos el valor 'n' que aquí hace referencia al tamaño del arreglo 'v'.<BR> Esta era la parte facíl, ahora veremos la parte más 'compleja'.<BR> ¿Qué pasa en el caso en el qué nuestro arreglo original no cumpla con la condición?Tendriamos que veerificar todos las posibles subsecuencias, entonces podriamos pensar que es una labor que puede ser demorada en términos de complejidad algoritmica, así que debemos empezar a pensar ideas para hacer el algoritmo más eficiente. Al autor del código se le ocurrió la idea de que pueden haber arreglos que contengan números repetidos y que por tanto calcular el \(LCM\) de estos sería estupído, pues sabemos que el $LCM$ entre 2 o más números iguales será el mismo valor de estos números, por tanto un arreglo que solo contenga números iguales no cumplirá con la condición y por tanto nuestra respuesta deberá ser 0, pero el caso acá es que para cualquier  arreglo podemos hacer que solo contemos los elementos no repetidos, esto se puede hacer con un map, así:</p>
+      <figure>
+        <figcaption class="init">
+  	<cite class="file">Ejemplo elementos distintos map</cite>
+        </figcaption>
+        <pre><code>
+	for (auto &i: v) cin >> i;
+	map&ltpair&ltint, int>> m;
+	for (auto i: v) {
+	  m[i] += 1;
+	}
+        </code></pre>
+      </figure>
+      <p>De esta manera podemos no solo eliminar los elementos repetidos sino que tambien contaremos las ocurrencias de estos elementos en el arreglo original. Ahora bien, ¿que hacemos con esta información?</p>
+    </div>
+  </body>
+</html>
