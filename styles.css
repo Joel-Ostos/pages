@@ -14,14 +14,33 @@ header {
     text-align: center;
 }
 
-h1 { font-size: 3.0em; }
-p {font-size: 1.3em;}
+h1 { 
+  font-size: 3.0em; 
+}
+
+p, ol {
+  font-size: 1.3em;
+}
 
 h1, h2, h3, h4, h5 {
   margin: 0.5em 0 0.5em;
   line-height: 1.2;
   font-weight: bold;
   clear: both;
+  text-decoration: none;
+}
+
+a {
+  color: #ccc;
+  position: relative; /*Permite posicionar el símbolo*/
+}
+
+a:hover::before {
+  content: '🔗'; /* Contenido del símbolo */
+  position: absolute; /* Posición relativa al enlace */
+  right: -30px; /* Ajusta la posición a la derecha */
+  color: #ccc; /* Color del símbolo */
+  font-weight: bold; /* Opcional: Haz el símbolo más llamativo */
 }
 
 figure {
